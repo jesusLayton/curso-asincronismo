@@ -1,12 +1,12 @@
 import fetch from 'node-fetch';
 
-const API = 'http://ipwho.is';
+const API = 'https://api.escuelajs.co/api/v1';
 
 function ferchData(urlApi){
     return fetch(urlApi);
 }
-
-ferchData(`${API}/192.168.20.26`)    
+/* 
+ferchData(`${API}/products`)    
     .then(response => response.json())
     .then(products => {
         console.log(products);
@@ -14,4 +14,23 @@ ferchData(`${API}/192.168.20.26`)
     .then(()=>{
         console.log('hola')
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log(error)); */
+
+
+ferchData(`${API}/products`)  
+    .then(response => response.json())
+    .then(products => {
+        console.log(products);
+        return ferchData(`${API}/products/${products[0].id}`)
+    })
+    .then(response =>response.json())
+    .then(product =>{
+        console.log(product.title);
+        return ferchData(`${API}/categories/${product.category.id}`)
+    })
+    .then(response => response.json())
+    .then(category =>{
+        console.log(category.name);
+    })
+    .catch(err => console.log(err))
+    .finally(()=> console.log('Finally'));
